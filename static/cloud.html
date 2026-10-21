@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amazon Store DBMS · Supabase</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    .setup-card{max-width:760px;margin:20px auto;padding:22px;border:1px solid #d7d7d7;background:#fff}
+    .setup-card input{display:block;width:100%;margin:8px 0 14px;padding:11px;border:1px solid #aaa;border-radius:4px}
+    .cloud-status{padding:10px 12px;background:#f3f3f3;border-left:3px solid #555;margin:12px 0}
+    .cloud-status.error{border-color:#9b2626;color:#731b1b}.cloud-status.ok{border-color:#27754b}
+    .role-panel{margin:18px 0}.hint{font-size:.92rem;color:#555}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">Amazon Store DBMS · Supabase</a>
+    <div class="account"><span id="role-badge">GUEST</span><strong id="account-label">Signed out</strong></div>
+    <button id="auth-button" class="button">Sign in</button>
+  </header>
+  <main>
+    <section class="intro">
+      <h1>Supabase Store Database</h1>
+      <p>This page reads and writes the hosted PostgreSQL database. PostgreSQL RLS policies and database functions enforce access.</p>
+      <p class="note">The local SQLite demo is separate. This page does not use its Python role checks.</p>
+    </section>
+    <section id="setup" class="setup-card">
+      <h2>Connect this demo to your Supabase project</h2>
+      <p>Enter the Project URL and publishable key from your Supabase dashboard. These are for the browser client; do not enter the database password or a secret/service-role key.</p>
+      <form id="config-form">
+        <label>Project URL<input name="url" type="url" placeholder="https://your-project.supabase.co" required></label>
+        <label>Publishable key<input name="key" type="password" autocomplete="off" placeholder="sb_publishable_…" required></label>
+        <button class="button">Connect</button>
+      </form>
+      <p class="hint">You can find these in Project → Connect or Settings → API Keys. The values are saved in this browser only.</p>
+    </section>
+    <div id="notice" class="cloud-status" role="status">Enter your project URL and publishable key to connect.</div>
+    <section id="auth-panel" class="panel hidden role-panel">
+      <h2>Sign in to your Supabase Auth account</h2>
+      <form id="login-form" class="add-form">
+        <input name="email" type="email" placeholder="Email" autocomplete="username" required>
+        <input name="password" type="password" placeholder="Password" autocomplete="current-password" required>
+        <button class="button">Sign in</button>
+      </form>
+      <p class="hint">Create demo users first in Supabase → Authentication → Users, then add a matching role row to public.profiles.</p>
+    </section>
+    <section id="catalogue-panel" class="hidden">
+      <div class="section-head"><div><h2>Products</h2><span id="product-count" class="muted"></span></div><input id="search" class="search" placeholder="Search products" aria-label="Search products"></div>
+      <section id="products" class="product-grid"></section>
+    </section>
+    <section id="orders-panel" class="panel hidden role-panel"><div class="section-head"><h2 id="orders-title">Orders</h2><button id="refresh-orders" class="plain-button">Refresh</button></div><div id="orders" class="orders-list"></div></section>
+    <section id="denied-panel" class="panel hidden role-panel"><h2>Try a restricted action</h2><p>This sends a request to Supabase. The database should reject it because of your role.</p><button id="try-denied" class="button">Attempt an action outside my role</button></section>
+    <section id="admin-panel" class="panel hidden role-panel">
+      <h2>Add a product</h2><p>Submission calls the database function, which checks the admin role.</p>
+      <form id="add-product-form" class="add-form"><input name="name" placeholder="Product name" required><input name="category" placeholder="Category" required><input name="price_rupees" type="number" step="0.01" min="0" placeholder="Price in rupees" required><input name="stock_quantity" type="number" min="0" placeholder="Stock quantity" required><input name="description" placeholder="Description"><button class="button">Add product</button></form>
+    </section>
+    <section class="notes"><h2>What is enforced by the database?</h2><ul><li>Customers can read their own orders; staff and analysts can read the permitted order rows.</li><li>Checkout runs through the place_order database function.</li><li>Stock changes run through update_stock; catalogue additions run through admin_add_product.</li><li>Changing or hiding a button in this page does not grant database access. PostgreSQL still checks the signed-in user's role.</li></ul></section>
+    <footer><a href="/">Back to local SQLite version</a> · DBMS Micro Project · fictional sample data</footer>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/static/cloud.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amazon Style Store Database Demo</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">Amazon Store DBMS Demo</a>
+    <div class="account"><span id="role-badge">GUEST</span><strong id="account-label">Signed out</strong></div>
+    <button id="auth-button" class="button">Sign in</button>
+  </header>
+  <main>
+    <section class="intro">
+      <h1>Amazon Style Store Database</h1>
+      <p>DBMS micro project: browse products, place a sample order, and compare what each user role can access.</p>
+      <p class="note">This is a fictional classroom demo. It is not connected to Amazon.</p>
+      <p><a href="/static/cloud.html">Open the Supabase version (database-enforced roles)</a></p>
+    </section>
+    <section id="login-panel" class="panel hidden">
+      <h2>Choose a demo user</h2>
+      <p>Each account represents a different way of using the database.</p>
+      <div class="login-options">
+        <button class="login-choice" data-email="maya@example.test" data-password="customer123"><b>Customer</b><span>Browse products, place orders, view own orders</span></button>
+        <button class="login-choice" data-email="ivan@example.test" data-password="stock123"><b>Inventory staff</b><span>Update stock, view orders</span></button>
+        <button class="login-choice" data-email="sam@example.test" data-password="analytics123"><b>Analyst</b><span>Read order data and run read-only SQL queries</span></button>
+        <button class="login-choice" data-email="admin@example.test" data-password="admin123"><b>Store administrator</b><span>Add products and manage the catalogue</span></button>
+      </div>
+    </section>
+    <section class="section-head"><div><h2>Products</h2><span id="product-count" class="muted"></span> <span id="results-label" class="muted">All products</span></div><input id="search" class="search" placeholder="Search products" aria-label="Search products"></section>
+    <section id="products" class="product-grid"></section>
+    <section id="order-panel" class="panel hidden"><div class="section-head"><h2 id="orders-title">Orders</h2><button id="refresh-orders" class="plain-button">Refresh</button></div><div id="orders" class="orders-list"></div></section>
+    <section id="admin-panel" class="panel hidden"><h2>Add a product</h2><p>This form inserts a product in the database.</p><form id="add-product-form" class="add-form"><input name="name" placeholder="Product name" required><input name="category" placeholder="Category" required><input name="price_rupees" type="number" step="0.01" min="0" placeholder="Price in rupees" required><input name="stock_quantity" type="number" min="0" placeholder="Stock quantity" required><input name="description" placeholder="Description"><button class="button">Add product</button></form></section>
+    <section class="notes"><h2>Database notes</h2><ul><li>Customer and inventory staff use preset screens for common tasks.</li><li>The analyst can read order data and use the read-only SQL prompt.</li><li>The store administrator changes catalogue data. Database schema and security settings belong to the database administrator.</li></ul></section>
+    <footer>DBMS Micro Project · Fictional sample data</footer>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
